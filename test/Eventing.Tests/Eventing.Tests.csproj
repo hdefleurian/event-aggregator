@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+	<DebugType>full</DebugType>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <CodeAnalysisRuleSet>..\..\Eventing.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Debug\netcoreapp2.0\Eventing.Tests.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <CodeAnalysisRuleSet>..\..\Eventing.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Release\netcoreapp2.0\Eventing.Tests.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeCoverage" Version="1.0.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta004" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Eventing\Eventing.csproj" />
+  </ItemGroup>
+
+</Project>
