@@ -2,23 +2,27 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-	<DebugType>full</DebugType>
+    <DebugType>full</DebugType>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup>
     <CodeAnalysisRuleSet>..\..\Eventing.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Debug\netstandard2.0\Eventing.Abstractions.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\netcoreapp2.0\EventingApp.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <CodeAnalysisRuleSet>..\..\Eventing.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Release\netstandard2.0\Eventing.Abstractions.xml</DocumentationFile>
-  </PropertyGroup>
+
   <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
-  
+
   <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta004" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

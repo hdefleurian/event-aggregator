@@ -10,67 +10,69 @@ namespace EventingApp
     using Eventing;
 
     /// <summary>
-    /// The main program
+    /// The main program.
     /// </summary>
     public static class Program
     {
         /// <summary>
-        /// The main entry point
+        /// The main entry point.
         /// </summary>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public static async Task Main()
         {
-            var aggregator = new EventAggregator();
-            var provider = new LocationTracker(aggregator);
-
-            Console.WriteLine("Start reporter FixedGPS");
-            var reporter1 = new LocationReporter(aggregator, "FixedGPS");
-            reporter1.Subscribe();
-
-            Console.WriteLine("Start reporter MobileGPS");
-            var reporter2 = new LocationReporter(aggregator, "MobileGPS");
-            reporter2.Subscribe();
-
-            Console.WriteLine("Send location : Latitude=47.6456, Longitude=-122.1312");
-            await Task.Run(() =>
+            using (var aggregator = new EventAggregator())
             {
-                provider.TrackLocation(new Location(47.6456, -122.1312));
-            });
+                var provider = new LocationTracker(aggregator);
 
-            await Task.Delay(250); // Delay to ensure all active reporters have received the location
+                Console.WriteLine("Start reporter FixedGPS");
+                var reporter1 = new LocationReporter(aggregator, "FixedGPS");
+                reporter1.Subscribe();
 
-            Console.WriteLine("Disable reporter FixedGPS");
-            reporter1.Unsubscribe();
+                Console.WriteLine("Start reporter MobileGPS");
+                var reporter2 = new LocationReporter(aggregator, "MobileGPS");
+                reporter2.Subscribe();
 
-            Console.WriteLine("Send location : Latitude=47.6677, Longitude=-122.1199");
-            await Task.Run(() =>
-            {
-                provider.TrackLocation(new Location(47.6677, -122.1199));
-            });
+                Console.WriteLine("Send location : Latitude=47.6456, Longitude=-122.1312");
+                await Task.Run(() =>
+                {
+                    provider.TrackLocation(new Location(47.6456, -122.1312));
+                }).ConfigureAwait(false);
 
-            await Task.Delay(250); // Delay to ensure all active reporters have received the location
+                await Task.Delay(250).ConfigureAwait(false); // Delay to ensure all active reporters have received the location
 
-            Console.WriteLine("Send location : null");
-            await Task.Run(() =>
-            {
-                provider.TrackLocation(null);
-            });
+                Console.WriteLine("Disable reporter FixedGPS");
+                reporter1.Unsubscribe();
 
-            await Task.Delay(250); // Delay to ensure all active reporters have received the location
+                Console.WriteLine("Send location : Latitude=47.6677, Longitude=-122.1199");
+                await Task.Run(() =>
+                {
+                    provider.TrackLocation(new Location(47.6677, -122.1199));
+                }).ConfigureAwait(false);
 
-            Console.WriteLine("Disable reporter MobileGPS");
-            reporter2.Unsubscribe();
+                await Task.Delay(250).ConfigureAwait(false); // Delay to ensure all active reporters have received the location
 
-            Console.WriteLine("Send location : Latitude=0, Longitude=0");
-            await Task.Run(() =>
-            {
-                provider.TrackLocation(new Location(0, 0));
-            });
+                Console.WriteLine("Send location : null");
+                await Task.Run(() =>
+                {
+                    provider.TrackLocation(null);
+                }).ConfigureAwait(false);
 
-            await Task.Delay(250); // Delay to ensure all active reporters have received the location
+                await Task.Delay(250).ConfigureAwait(false); // Delay to ensure all active reporters have received the location
 
-            Console.WriteLine("Press a key for exit");
-            Console.ReadKey();
+                Console.WriteLine("Disable reporter MobileGPS");
+                reporter2.Unsubscribe();
+
+                Console.WriteLine("Send location : Latitude=0, Longitude=0");
+                await Task.Run(() =>
+                {
+                    provider.TrackLocation(new Location(0, 0));
+                }).ConfigureAwait(false);
+
+                await Task.Delay(250).ConfigureAwait(false); // Delay to ensure all active reporters have received the location
+
+                Console.WriteLine("Press a key for exit");
+                Console.ReadKey();
+            }
         }
     }
 }

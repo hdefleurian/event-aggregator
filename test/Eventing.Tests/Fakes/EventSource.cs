@@ -4,6 +4,7 @@
 
 namespace Eventing.Tests.Fakes
 {
+    using System;
     using Eventing.Abstractions;
 
     /// <summary>
@@ -11,9 +12,6 @@ namespace Eventing.Tests.Fakes
     /// </summary>
     public class EventSource
     {
-        /// <summary>
-        /// The publisher
-        /// </summary>
         private readonly IEventPublisher _publisher;
 
         /// <summary>
@@ -22,7 +20,7 @@ namespace Eventing.Tests.Fakes
         /// <param name="publisher">The publisher.</param>
         public EventSource(IEventPublisher publisher)
         {
-            _publisher = publisher;
+            _publisher = publisher ?? throw new ArgumentNullException(nameof(publisher));
         }
 
         /// <summary>

@@ -9,7 +9,7 @@ namespace EventingApp
     using Eventing.Abstractions;
 
     /// <summary>
-    /// Report the current location for the specified source name
+    /// Report the current location for the specified source name.
     /// </summary>
     public class LocationReporter
     {
