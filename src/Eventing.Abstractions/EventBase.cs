@@ -5,7 +5,7 @@
 namespace Eventing.Abstractions
 {
     /// <summary>
-    /// Base class for an event
+    /// Base class for an event.
     /// </summary>
     public abstract class EventBase
     {

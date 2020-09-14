@@ -12,7 +12,7 @@ namespace Eventing.Tests.Fakes
     /// <summary>
     /// A receiver of event to be used in the unit test classes.
     /// </summary>
-    public class EventReceiver
+    public sealed class EventReceiver : IDisposable
     {
         private readonly ManualResetEventSlim _receivedSignal;
         private readonly IEventSubscriber _subscriber;
@@ -34,7 +34,7 @@ namespace Eventing.Tests.Fakes
         /// <param name="onReceivedAction">The action to execute when the event has been received.</param>
         public EventReceiver(IEventSubscriber subscriber, Action onReceivedAction)
         {
-            _subscriber = subscriber;
+            _subscriber = subscriber ?? throw new ArgumentNullException(nameof(subscriber));
             _receivedSignal = new ManualResetEventSlim(false);
             _onReceivedAction = onReceivedAction;
         }
@@ -48,6 +48,17 @@ namespace Eventing.Tests.Fakes
         /// Gets the event data.
         /// </summary>
         public EventData Data { get; private set; }
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            if (_receivedSignal == null)
+            {
+                return;
+            }
+
+            _receivedSignal.Dispose();
+        }
 
         /// <summary>
         /// Subscribes to the event using the <see cref="IEventSubscriber"/> instance.
@@ -68,7 +79,7 @@ namespace Eventing.Tests.Fakes
         }
 
         /// <summary>
-        /// Raises the <see cref="E:Receive" /> event.
+        /// Raises the received event.
         /// </summary>
         /// <param name="obj">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void OnReceive(EventArgs obj)

@@ -5,7 +5,7 @@
 namespace EventingApp
 {
     /// <summary>
-    /// Represent a GPS location
+    /// Represent a GPS location.
     /// </summary>
     public class Location
     {

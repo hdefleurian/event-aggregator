@@ -12,11 +12,11 @@ namespace Eventing
     using Eventing.Internals;
 
     /// <summary>
-    /// The event aggregator
+    /// The event aggregator.
     /// </summary>
     /// <seealso cref="IEventAggregator" />
     /// <seealso cref="IDisposable" />
-    public class EventAggregator : IEventAggregator, IDisposable
+    public sealed class EventAggregator : IEventAggregator, IDisposable
     {
         private readonly ConcurrentDictionary<string, EventManager> _managers;
 
@@ -104,13 +104,21 @@ namespace Eventing
             Debug.WriteLine($"Remove subscriber for event {eventType} with token {subscriber.Token}");
 
             var manager = GetManagerForEvent(eventType);
+            if (manager == null)
+            {
+                Debug.WriteLine($"No subscriber to remove for event {eventType}");
+                return;
+            }
 
             var remainingSubscribers = manager.Remove(subscriber.Token);
             if (remainingSubscribers == 0)
             {
                 Debug.WriteLine($"Remove manager for event {eventType}");
 
-                _managers.TryRemove(eventType, out manager);
+                if (_managers.TryRemove(eventType, out manager))
+                {
+                    manager.Dispose();
+                }
             }
         }
 
